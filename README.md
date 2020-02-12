@@ -1,68 +1,67 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Redux basics
 
-## Available Scripts
+We have two components: nameDisplay and nameForm. A name is set in nameForm, where it is saved into global state. It can then be pulled from global state in nameDisplay.
 
-In the project directory, you can run:
+## Setting up Redux
 
-### `npm start`
+We must first install Redux
+```
+npm i redux react-redux
+```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Redux works by a system of actions and reducers.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- Actions are Javascript objects which are used to update global state.
+- Action creators are functions which return actions.
+- The actions are passed to Reducers, which update parts of state
+- State is held in the store
 
-### `npm test`
+### 1. Actions and actions creators
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create a directory called ```actions``` within ```src```. Create a file called ```index.js``` within actions.
 
-### `npm run build`
+Within index.js, we will now create an action creator for name.
+```Javascript
+export const setName = (name = '') => {
+    return {
+        type: 'NAME',
+        payload: name
+    };
+};
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 2. Reducers
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Create a directory called ```reducers``` within ```src```. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Within reducers, create a file called ```name_reducer.js```. Within that file we will now write our reducer.
+```Javascript
+const defaultState = {
+    name: ''
+};
 
-### `npm run eject`
+export default (state = defaultState, action) => {
+    switch(action.type) {
+        case 'NAME':
+            return {...state, name: action.payload};
+        default:
+            return state;
+    };
+};
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Create a file called ```index.js``` within reducers. Within index.js, we will now create our reducer combiner.
+```Javascript
+import { combineReducers } from 'redux';
+import nameReducer from './name_reducer';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+export default combineReducers({
+    name: nameReducer;
+});
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 3. The store
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Saving into global state
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Pulling from global state
