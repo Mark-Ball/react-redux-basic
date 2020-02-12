@@ -5,11 +5,12 @@ import NameForm from './nameForm';
 class App extends Component {
     state = { name: 'Mark' };
 
-    onFormSubmit = (event) => {
-        event.preventDefault();
-        console.log(event);
-        this.setState({ name: 'Tim' });
-    }
+    onFormSubmit = (name) => {
+        return (event) => {
+            event.preventDefault();
+            this.setState({ name });
+        };
+    };
 
     render() {
         const { name } = this.state; 

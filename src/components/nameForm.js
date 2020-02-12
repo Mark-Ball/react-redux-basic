@@ -5,7 +5,6 @@ class NameForm extends Component {
     
     onInputChange = (event) => {
         this.setState({ name: event.target.value });
-        console.log(event.target.value);
     }
     
     render() {
@@ -13,7 +12,7 @@ class NameForm extends Component {
         const { onFormSubmit } = this.props;
 
         return (
-            <form onSubmit={onFormSubmit}>
+            <form onSubmit={onFormSubmit(name)}>
                 <label>Name</label>
                 <input type='text' name='name' onChange={this.onInputChange} value={name} />
                 <input type='submit' />
