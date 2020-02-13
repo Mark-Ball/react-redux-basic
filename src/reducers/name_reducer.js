@@ -1,5 +1,5 @@
 const defaultState = {
-    name: ''
+    name: 'Please enter name'
 };
 
 export default (state = defaultState, action) => {

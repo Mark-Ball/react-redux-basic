@@ -25,7 +25,7 @@ class NameForm extends Component {
                 <input type='submit' />
             </form>
         )
-    }
-}
+    };
+};
 
 export default connect(null, { setName })(NameForm);
