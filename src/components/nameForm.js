@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setName } from './../actions';
 
 class NameForm extends Component {
     state = { name: '' };
     
-    onInputChange = (event) => {
-        this.setState({ name: event.target.value });
-    }
+    onFormSubmit = event => {
+        event.preventDefault();
+
+        const { name } = this.state;
+        this.props.setName(name);
+        this.setState({ name: '' });
+    };
+
+    onInputChange = event => this.setState({ name: event.target.value });
     
     render() {
         const { name } = this.state;
-        const { onFormSubmit } = this.props;
 
         return (
-            <form onSubmit={onFormSubmit(name)}>
+            <form onSubmit={this.onFormSubmit}>
                 <label>Name</label>
                 <input type='text' name='name' onChange={this.onInputChange} value={name} />
                 <input type='submit' />
@@ -21,4 +28,4 @@ class NameForm extends Component {
     }
 }
 
-export default NameForm;
+export default connect(null, { setName })(NameForm);
