@@ -62,6 +62,59 @@ export default combineReducers({
 
 ### 3. The store
 
+The store is the part of Redux which uses al our actions and reducers and combines them into global state. Create a file called ```store.js``` in the src folder. To allow viewing of the store through the browser, we must add ```window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()```. We must also install Redux devtools in the browser.
+```Javascript
+import { createStore } from 'redux';
+import reducers from './reducers';
+
+export default createStore(reducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+```
+
+### 4. Integrating into React
+
+To give our entire application access to the store, we must wrap our entire application (i.e. our <App /> component) inside a Provider. In index.js, import the Provider component and the store, wrap App in Provider, passing the store to Provider.
+```Javascript
+import { Provider } from 'react-redux';
+import store from './store';
+// other imports
+
+// reactDOM render
+<Provider store={store}>
+    <App />
+</Provider>
+```
+
 ## Saving into global state
 
+To save into global state, we must use the ```connect``` function to allow access to the Redux store. We call connect in the export line, where we pass null as the first argument and the name of our action creator as the second argument. 
+
+We want to save name into the store in ```nameForm.js```.
+```Javascript
+import { connect } from 'react-redux';
+import { setName } from './../actions';
+
+// nameForm class
+
+export default connect(null, { setName })(nameForm);
+```
+
+This puts the ```setName()``` function in props, so it can be called with ```this.props.setName()```.
+
 ## Pulling from global state
+
+To use the variable saved into global state, we use the first argument of the connect() function. To do this we create a function called mapStateToProps and pass it as the first argument of connect.
+
+We want to access the store in ```nameDisplay.js```.
+```Javascript
+import { connect } from 'react-redux';
+
+// nameDisplay class
+
+const mapStateToProps = (state) => {
+    return {
+        name: state.name.name
+    };
+};
+
+export default connect(mapStateToProps)(nameDisplay);
+```
